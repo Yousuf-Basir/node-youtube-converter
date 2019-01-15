@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path')
+var ffmpeg = require('ffmpeg-static');
 const PORT = process.env.PORT || 5000
 var os = require('os');
 
@@ -8,7 +9,8 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index',{
-    title:  os.type()+os.arch() 
+    title:  os.type()+os.arch(),
+    ffmpegPath: ffmpeg.path
   }))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
