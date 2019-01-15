@@ -3,6 +3,9 @@ const path = require('path');
 var ffmpeg = require('ffmpeg-static');
 var YoutubeMp3Downloader = require("./extra");
 var os = require('os');
+var http = require('http'),
+    url = require('url'),
+    fs = require('fs');
 
 var app = express();
 
@@ -20,11 +23,27 @@ var cb0 = function (req, res, next) {
       "progressTimeout": 2000                 // How long should be the interval of the progress reports
   });
 
-  YD.download("https://www.youtube.com/watch?v=tJuivqCGCpI&start_radio=1&list=RDMMtJuivqCGCpI");
+  YD.download("https://www.youtube.com/watch?v=ApXoWvfEYVU");
 
   YD.on("finished", function(err, data) {
-      console.log(JSON.stringify(data));
-      next();
+
+      var filePath = path.join(os.tmpdir(), data.videoTitle);
+      console.log(JSON.stringify(filePath));
+
+      var query = url.parse(req.url, true).query;
+      fs.readFile(filePath + ".mp3", function (err, content) {
+        if (err) {
+            res.writeHead(400, {'Content-type':'text/html'})
+            console.log(err);
+            res.end("No such file");    
+        } else {
+            //specify Content will be an attachment
+            res.setHeader('Content-disposition', 'attachment; filename='+data.videoTitle + ".mp3");
+            res.end(content);
+        }
+      });
+
+      
   });
    
   YD.on("error", function(error) {
