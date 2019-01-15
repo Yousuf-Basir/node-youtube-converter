@@ -6,7 +6,15 @@
 
 <body>
 
-  <h1> <%= title %></h1>
+  <h4>Server info: <%= title %></h4>
   <p>FFMPEG path: <%=ffmpegPath %> </p>
+  <form method="POST" action="/download">
+    <label>Enter video url here</label>
+    <input type="text" name="urlData">
+    <br>
+    <input type="submit" value="Submit">
+  </form>
+
+
 </body>
 </html>
