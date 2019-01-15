@@ -8,12 +8,13 @@ var app = express();
 
 const PORT = process.env.PORT || 5000;
 
-    
+
 var cb0 = function (req, res, next) {
-  console.log('DOWNLOAD STARTED')
+  console.log('DOWNLOAD STARTED');
+  var dir = os.tmpdir()
   var YD = new YoutubeMp3Downloader({
       "ffmpegPath": ffmpeg.path,        // Where is the FFmpeg binary located?
-      "outputPath": "./",    // Where should the downloaded and encoded files be stored?
+      "outputPath": dir,    // Where should the downloaded and encoded files be stored?
       "youtubeVideoQuality": "highest",       // What video quality should be used?
       "queueParallelism": 2,                  // How many parallel downloads/encodes should be started?
       "progressTimeout": 2000                 // How long should be the interval of the progress reports
