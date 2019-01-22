@@ -53,25 +53,22 @@ app.post('/download', function(req, res, next){
   
     YD.on("finished", function(err, data) {
   
-        var filePath = path.join(os.tmpdir(), data.videoTitle);
+        var filePath = path.join(os.tmpdir(), data.videoTitle) + ".mp3";
         //res.write(JSON.stringify(filePath));
         //res.writeHead(200, {'Content-Type': 'audio/mpeg'});
         //res.setHeader('Content-disposition', 'attachment; filename='+data.videoTitle + ".mp3");
         
         // var myReadStream = fs.createReadStream(filePath+".mp3");
         // myReadStream.pipe(res);
-        res.download(filePath+".mp3", data.videoTitle + ".mp3", function(err){
-            if (err) {
-              // Handle error, but keep in mind the response may be partially-sent
-              // so check res.headersSent
-              console.log(err);
-            } else {
-              // decrement a download credit, etc.
-              console.log("success downlading file!")
-            }
-          });
-        
+        //res.download(filePath+".mp3", data.videoTitle + ".mp3"
 
+        res.write('<html>');
+        res.write('<body>');
+        res.write('<h1>Hello, World!</h1>');
+        res.write('<a href= "'+ filePath+'" download> DOWNLOAD '+filePath+' </a>');
+        res.write('</body>');
+        res.write('</html>');
+        res.end();
 
         res.end();
         //var query = url.parse(req.url, true).query;
