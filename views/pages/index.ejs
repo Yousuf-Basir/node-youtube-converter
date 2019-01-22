@@ -6,10 +6,8 @@
 
 <body>
 
-  <h4>Server info: <%= title %></h4>
-  <a href="/dd" download>LINK </a>
+  <h4><%= dataText %></h4>
   <p>link: https://youtu.be/kJ_WhEfORUU</p>
-  <p>FFMPEG path: <%=ffmpegPath %> </p>
   <form method="POST" action="/download">
     <label>Enter video url here</label>
     <input type="text" name="urlData">

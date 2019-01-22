@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
+</head>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCJQxV_jSlvdWZewyigW_oq3WVoO9mtMIU",
+    authDomain: "mediaconverter.firebaseapp.com",
+    databaseURL: "https://mediaconverter.firebaseio.com",
+    projectId: "mediaconverter",
+    storageBucket: "mediaconverter.appspot.com",
+    messagingSenderId: "230553046918"
+  };
+  firebase.initializeApp(config);
+
+  var starCountRef = firebase.database().ref('downloader/progresses/progressData');
+  starCountRef.on('value', function(snapshot) {
+    var data = snapshot.val();
+    $(".log").text(data.progress);
+    console.log(data.progress);
+    $(".link").text(data.linkData);
+    $(".path").val(data.linkData);
+    $(".songName").val(data.songName);
+  });
+  
+
+</script>
+<button>Download</button>
+<br>
+<form method="POST" action="/startDownload">
+    <label>Enter video url here</label>
+    <input class="path" type="text" name="urlData">
+    <input class="songName" type="text" name="songName">
+    <br>
+    <input type="submit" value="Submit">
+  </form>
+
+
+
+<p class="log">progress</p>
+<p class="link">link</p>
+</html>
