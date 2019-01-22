@@ -3,6 +3,12 @@
 <head>
   <% include ../partials/header.ejs %>
   <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
+  <style>
+    .log{
+      color: green;
+      font-style: bold;
+    }
+  </style>
 </head>
 <script>
   // Initialize Firebase
@@ -19,27 +25,36 @@
   var starCountRef = firebase.database().ref('downloader/progresses/progressData');
   starCountRef.on('value', function(snapshot) {
     var data = snapshot.val();
-    $(".log").text(data.progress);
+    $(".log").text("progress: "+data.progress+"%");
     console.log(data.progress);
     $(".link").text(data.linkData);
     $(".path").val(data.linkData);
     $(".songName").val(data.songName);
+
+    if(data.progress != 100){
+      $(".downloadForm").hide();
+    }
+    else{
+      $(".downloadForm").show();
+    }
   });
   
 
 </script>
 <button>Download</button>
+<p class="link">link</p>
 <br>
-<form method="POST" action="/startDownload">
-    <label>Enter video url here</label>
+<p class="log">progress</p>
+<br>
+<form class="downloadForm" method="POST" action="/startDownload">
+    <label>Video informations</label>
     <input class="path" type="text" name="urlData">
     <input class="songName" type="text" name="songName">
     <br>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Download">
   </form>
 
 
 
-<p class="log">progress</p>
-<p class="link">link</p>
+
 </html>

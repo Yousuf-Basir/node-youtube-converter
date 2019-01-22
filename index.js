@@ -45,6 +45,11 @@ app.post('/download', function(req, res, next){
     startDownload(req, res);
 })
 app.post('/startDownload', function(req, res){
+    postDownload(req, res);
+});
+
+
+var postDownload = function(req, res){
     var linkData = req.body.urlData;
     var songName = req.body.songName;
     fs.readFile(linkData, function (err, content) {
@@ -53,13 +58,20 @@ app.post('/startDownload', function(req, res){
             console.log(err);
             res.end("No such file");    
         } else {
-
+            var progRef = ref.child("progresses");  
+              progRef.set({
+                progressData: 0
+                });
               res.setHeader('Content-disposition', 'attachment; filename='+songName);
               res.send(content);
-              res.end();   
+              //res.write("foo");
+              res.end(); 
+              
+              
         }
       });
-});
+}
+
 
 var startDownload = function(req, res){
     var linkData = req.body.urlData; var dir = os.tmpdir();
@@ -89,6 +101,7 @@ var startDownload = function(req, res){
         filePathWithName = filePath + ".mp3";
         progRef.set({
             progressData: {
+                progress: 100,
                 linkData: filePathWithName,
                 songName: data.videoTitle + ".mp3"
             }
