@@ -85,6 +85,7 @@ app.post('/download', function(req, res, next){
      
     YD.on("progress", function(progress) {
         console.log(JSON.stringify(progress));
+        res.send(JSON.stringify(progress));
     });
     
 })
