@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const axios = require('axios');
 var ffmpeg = require('ffmpeg-static');
 var YoutubeMp3Downloader = require("./extra");
 var os = require('os');
@@ -53,28 +54,47 @@ app.post('/download', function(req, res, next){
     YD.on("finished", function(err, data) {
   
         var filePath = path.join(os.tmpdir(), data.videoTitle);
-        console.log(JSON.stringify(filePath));
-  
-        //var query = url.parse(req.url, true).query;
-        fs.readFile(filePath + ".mp3", function (err, content) {
-          if (err) {
-              res.writeHead(400, {'Content-type':'text/html'})
+        //res.write(JSON.stringify(filePath));
+        //res.writeHead(200, {'Content-Type': 'audio/mpeg'});
+        //res.setHeader('Content-disposition', 'attachment; filename='+data.videoTitle + ".mp3");
+        
+        // var myReadStream = fs.createReadStream(filePath+".mp3");
+        // myReadStream.pipe(res);
+        res.download(filePath+".mp3", data.videoTitle + ".mp3", function(err){
+            if (err) {
+              // Handle error, but keep in mind the response may be partially-sent
+              // so check res.headersSent
               console.log(err);
-              res.end("No such file");    
-          } else {
-              var j = "zero";
-              //specify Content will be an attachment
-              if(z="zero"){
-                res.setHeader('Content-disposition', 'attachment; filename='+data.videoTitle + ".mp3");
-                res.send(content);
-                z="hero";
-              }else{
-                res.redirect('/');
-              }
+            } else {
+              // decrement a download credit, etc.
+              console.log("success downlading file!")
+            }
+          });
+        
+
+
+        res.end();
+        //var query = url.parse(req.url, true).query;
+
+        // fs.readFile(filePath + ".mp3", function (err, content) {
+        //   if (err) {
+        //       res.writeHead(400, {'Content-type':'text/html'})
+        //       console.log(err);
+        //       res.end("No such file");    
+        //   } else {
+        //       var j = "zero";
+        //       //specify Content will be an attachment
+        //       if(z="zero"){
+        //         res.setHeader('Content-disposition', 'attachment; filename='+data.videoTitle + ".mp3");
+        //         res.send(content);
+        //         z="hero";
+        //       }else{
+        //         res.redirect('/');
+        //       }
               
               
-          }
-        });
+        //   }
+        // });
   
         
     });
@@ -85,8 +105,12 @@ app.post('/download', function(req, res, next){
      
     YD.on("progress", function(progress) {
         console.log(JSON.stringify(progress));
-        res.send(JSON.stringify(progress));
+        res.write(JSON.stringify(progress));
+        // if(progress.percentage == 100){
+        //     res.end();
+        // }
     });
+    
     
 })
 
