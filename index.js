@@ -64,7 +64,7 @@ app.post('/download', function(req, res, next){
 
         res.write('<html>');
         res.write('<body>');
-        res.write('<h1>Hello, World!</h1>');
+        res.write('<h1>COMPLETED</h1>');
         res.write('<a href= "'+ filePath+'" download> DOWNLOAD '+filePath+' </a>');
         res.write('</body>');
         res.write('</html>');
